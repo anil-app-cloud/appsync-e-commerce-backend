@@ -1,0 +1,85 @@
+type Product {
+    product_id: ID!
+    name: String
+    price: Int
+    discount: Int
+}
+
+input inputProduct {
+    name: String
+    price: Int
+    discount: Int
+}
+
+input productUpdater{
+    product_id: ID!
+    name: String
+    price: Int
+    discount: Int
+}
+
+type User {
+    user_id: ID!
+    name: String
+    email: String
+    address: String
+}
+
+input inputUser {
+    name: String
+    email: String
+    address: String
+}
+
+input userUpdater{
+    user_id: ID!
+    name: String
+    email: String
+    address: String
+}
+
+type Cart {
+    cart_id: ID!
+    user_id: ID!
+    products: [Product]
+}
+
+
+
+input inputCartProduct {
+    product_id: ID!
+    name: String
+    price: Int
+    discount: Int
+}
+
+input inputCart{
+    userId: ID! 
+    products: [inputCartProduct]
+}
+
+
+type Mutation {
+    createProduct(userInput: inputProduct!): Product
+    createUser(userInput: inputUser!): User
+    createCart(userInput: inputCart!): Cart
+    addToCart(userId: ID!, product: inputCartProduct!): Cart 
+    updateUser(userInput: userUpdater!): User
+    updateProduct(userInput: productUpdater!): Product 
+    deleteUser(userId: ID!): String
+    deleteProduct(productId: ID!): String
+}
+
+type Query {
+    getUsers: [User]
+    getUserById(id: ID!): User
+    getProducts: [Product]
+    getProductById(id: ID!): Product
+    getCartItemsByUser(userId: ID!): [Product]
+    getAllCarts: [Cart]
+}
+
+type Subscription {
+	productUpdate: Product @aws_subscribe(mutations: ["createProduct"])
+}
+
